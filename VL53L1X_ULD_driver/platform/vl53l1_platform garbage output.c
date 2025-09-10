@@ -1,13 +1,9 @@
 /**
-  *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
+  turns out this was garbage because the combined read-write part did not work
+  the flags MP_MACHINE_I2C_FLAG_READ | MP_MACHINE_I2C_FLAG_STOP are sent with both operations
+  which is incorrect
+  separate the read & write & this probably works as is
+
   */
 // ===== file: vl53l1_platform.c =====
 // MicroPython I2C glue for ST VL53L1X ULD (STSW-IMG009)
@@ -30,6 +26,10 @@ void vl53l1_platform_bind_i2c(mp_obj_t i2c_obj) {
     // We don't strictly need to check the type; any object implementing the
     // I2C protocol will work with mp_machine_i2c_transfer_adaptor.
     s_i2c = (mp_obj_base_t *)MP_OBJ_TO_PTR(i2c_obj);
+    // Type check (important!)
+    if (s_i2c->type != &machine_i2c_type) {
+        mp_raise_TypeError(MP_ERROR_TEXT("expected an I2C object"));
+    }
 }
 
 // Internal helper to perform I2C transfers. Returns 0 on success, -1 on error.

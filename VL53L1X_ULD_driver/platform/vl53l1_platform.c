@@ -170,7 +170,7 @@ int8_t VL53L1_WriteMulti(uint16_t dev, uint16_t index, uint8_t *pdata, uint32_t 
     buf[i] = pdata[i]>>8;  // convert each 16-bit word to big-endian
     buf[i+1] = pdata[i]&0xFF;
     }*/
-    mp_printf(&mp_plat_print, "VL53L1_WriteMulti called\n");
+    //mp_printf(&mp_plat_print, "VL53L1_WriteMulti called\n");
     hdr[0] = index>>8;
     hdr[1] = index&0xFF;
 
@@ -192,7 +192,7 @@ int8_t VL53L1_ReadMulti(uint16_t dev, uint16_t index, uint8_t *pdata, uint32_t c
     // Write index, then read data
     //int ret = i2c_transfer_wr(dev, hdr, sizeof hdr, pdata, count);
     //return 0; //(ret == 0) ? 0 : -1;
-    mp_printf(&mp_plat_print, "VL53L1_ReadMulti called\n");
+    //mp_printf(&mp_plat_print, "VL53L1_ReadMulti called\n");
     VL53L1_Error Status = VL53L1_ERROR_NONE;
     int32_t status_int;
     uint8_t wbuf[2]; //, rbuf[1];

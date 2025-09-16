@@ -546,7 +546,21 @@ static mp_obj_t vl53l1x_get_result(mp_obj_t self_in) {
 }
 static MP_DEFINE_CONST_FUN_OBJ_1(vl53l1x_get_result_obj, vl53l1x_get_result);
 
-// 43. Calibrate Offset
+// 43. Return to Regular Ranging  (from THreshold Mode)
+//regular ranging mode, write 0x20 to the 0x46 register (8 bits).
+static mp_obj_t vl53l1x_return_to_ranging_mode(mp_obj_t self_in) {
+    vl53l1x_obj_t *self = MP_OBJ_TO_PTR(self_in);
+    //VL53L1X_ERROR status = 0;
+	//status |= VL53L1_WrByte(dev, SYSTEM__INTERRUPT_CONFIG_GPIO, 0x20);	
+	//return status;
+
+    //VL53L1X_StartTemperatureUpdate(self->i2c_addr);
+    VL53L1_WrByte(self->i2c_addr, SYSTEM__INTERRUPT_CONFIG_GPIO, 0x20);
+    return mp_const_none;
+}
+static MP_DEFINE_CONST_FUN_OBJ_1(vl53l1x_return_to_ranging_mode_obj, vl53l1x_return_to_ranging_mode);
+
+// 44. Calibrate Offset
 static mp_obj_t vl53l1x_calibrate_offset(mp_obj_t self_in, mp_obj_t mm_to_tgt) {
     vl53l1x_obj_t *self = MP_OBJ_TO_PTR(self_in);
     uint16_t distance_mm = mp_obj_get_int(mm_to_tgt);
@@ -556,7 +570,7 @@ static mp_obj_t vl53l1x_calibrate_offset(mp_obj_t self_in, mp_obj_t mm_to_tgt) {
 }
 static MP_DEFINE_CONST_FUN_OBJ_2(vl53l1x_calibrate_offset_obj, vl53l1x_calibrate_offset);
 
-// 44. Calibrate cross talk
+// 45. Calibrate cross talk
 static mp_obj_t vl53l1x_calibrate_xtalk(mp_obj_t self_in, mp_obj_t mm_to_tgt) {
     vl53l1x_obj_t *self = MP_OBJ_TO_PTR(self_in);
     uint16_t distance_mm = mp_obj_get_int(mm_to_tgt);
@@ -655,10 +669,13 @@ static const mp_rom_map_elem_t vl53l1x_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_get_sigma_threshold), MP_ROM_PTR(&vl53l1x_get_sigma_threshold_obj) },
     // 41. StartTemperatureUpdate
     { MP_ROM_QSTR(MP_QSTR_start_temp_update), MP_ROM_PTR(&vl53l1x_start_temp_update_obj) },
-
-    // Extra C table entries not in text list (kept for completeness)
+    // 42
     { MP_ROM_QSTR(MP_QSTR_get_result), MP_ROM_PTR(&vl53l1x_get_result_obj) },
+    // 43. Return to Regular Ranging  (from Threshold Mode)
+    { MP_ROM_QSTR(MP_QSTR_return_to_ranging_mode), MP_ROM_PTR(&vl53l1x_return_to_ranging_mode_obj) },
+    // 44.
     { MP_ROM_QSTR(MP_QSTR_calibrate_offset), MP_ROM_PTR(&vl53l1x_calibrate_offset_obj) },
+    // 45.
     { MP_ROM_QSTR(MP_QSTR_calibrate_xtalk), MP_ROM_PTR(&vl53l1x_calibrate_xtalk_obj) },
 };
 static MP_DEFINE_CONST_DICT(vl53l1x_locals_dict, vl53l1x_locals_dict_table);

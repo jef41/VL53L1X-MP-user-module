@@ -138,7 +138,7 @@ static MP_DEFINE_CONST_FUN_OBJ_2(vl53l1x_read_obj, vl53l1x_read);
 
 
 // Methods
-// write to a byte address
+// write to a byte address, return error status 0 on success
 static mp_obj_t vl53l1x_write_to_addr(mp_obj_t self_in, mp_obj_t reg_addr_in, mp_obj_t value_in) {
     VL53L1X_ERROR status = 0;
     vl53l1x_obj_t *self = MP_OBJ_TO_PTR(self_in);
